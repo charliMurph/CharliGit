@@ -1,13 +1,25 @@
 import java.util.ArrayList;
 import java.util.HashMap;
-import obstacle.*;
+import obstacles.*;
 import common.*;
 
 
 class Main {
     public static void main(String[] args) {
+        // Parse the command line arguments into obstacles
+        // and create a map with those obstacles
         HashMap<String, ArrayList<String>> parsedArgs = parseArgs(args);
-        System.out.println(parsedArgs);
+        ArrayList<Obstacle> obstacles = parseObstacles(parsedArgs);
+        Map map = new Map(obstacles);
+
+        // Parse the start and target locations
+        String startArg = stripParentheses(parsedArgs.get("-start").get(0));
+        String targetArg = stripParentheses(parsedArgs.get("-target").get(0));
+        Location start = Location.parse(startArg);
+        Location target = Location.parse(targetArg);
+
+        // Show the map
+        System.out.println(map.getSolvedMap(start, target));
     }
 
     /**
